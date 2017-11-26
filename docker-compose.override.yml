@@ -1,0 +1,14 @@
+version: "3"
+services:
+  database:
+    image: postgres:9.5.2
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
+  database-utils:
+    image: postgres:9.5.2
+    network_mode: host
+    command: psql
+    environment:
+      - PGPASSWORD

@@ -1,0 +1,52 @@
+#!/usr/bin/env stack
+{- stack script
+  --resolver lts-9.13
+  --package base
+  --package process
+  -}
+
+module Main where
+
+import Control.Applicative ((<|>))
+import Data.Maybe
+import System.Environment
+import System.Process
+import Text.ParserCombinators.ReadP
+
+data DBOptions = DBOptions
+  { db :: String
+  , user :: String
+  , pass :: String
+  , host :: String
+  , port :: String
+  , name :: String
+  } deriving Show
+
+urlParser :: ReadP DBOptions
+urlParser = DBOptions <$>
+  manyTill get (string "://") <*>
+  manyTill get (char ':' <|> char '@') <*>
+  manyTill get (char '@') <*>
+  manyTill get (char ':') <*>
+  manyTill get (char '/') <*>
+  manyTill get eof
+
+parseUrl :: String -> Maybe DBOptions
+parseUrl = fmap fst . listToMaybe . readP_to_S urlParser
+
+command :: DBOptions -> IO ()
+command opts = callCommand $ unwords
+  [ "PGPASSWORD=" ++ pass opts
+  , "docker-compose run database-utils createdb"
+  , "-U " ++ user opts
+  , "-h " ++ host opts
+  , "-p " ++ port opts
+  , name opts
+  ]
+
+main = do
+  url <- parseUrl <$> getEnv "DATABASE_URL"
+  case url of
+    Just opts -> command opts
+    Nothing -> putStrLn "Database url parse error :("
+  putStrLn "Done."

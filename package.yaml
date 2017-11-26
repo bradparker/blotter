@@ -1,0 +1,49 @@
+name: blotter
+version: 1.0.0
+
+dependencies:
+  - base
+
+executables:
+  web:
+    main: source/Main.hs
+    dependencies:
+      - blotter
+
+library:
+  source-dirs:
+    - source
+  dependencies:
+    - bytestring
+    - exceptions
+    - http-types
+    - lens
+    - mtl
+    - opaleye
+    - postgresql-simple
+    - product-profunctors
+    - resource-pool
+    - scotty
+    - text
+    - time
+    - uuid
+    - wai
+    - wai-extra
+    - warp
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs:
+      - test
+    dependencies:
+      - blotter
+      - bytestring
+      - exceptions
+      - hspec
+      - hspec-core
+      - hspec-discover
+      - lens
+      - mtl
+      - postgresql-simple
+      - resource-pool

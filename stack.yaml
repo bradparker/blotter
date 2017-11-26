@@ -1,0 +1,8 @@
+resolver: lts-9.13
+nix:
+  enable: true
+  pure: false
+  packages:
+    - postgresql
+    - binutils
+    - zlib

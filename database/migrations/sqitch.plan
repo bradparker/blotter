@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=blotter
+%uri=https://github.com/bradparker/blotter
+
+articles 2017-11-23T08:59:40Z root <root@brad> # Create the articles table

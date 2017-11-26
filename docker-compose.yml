@@ -1,0 +1,8 @@
+version: "3"
+services:
+  sqitch:
+    image: docteurklein/sqitch:pgsql
+    working_dir: /database/migrations
+    volumes:
+      - ./database/migrations:/database/migrations
+    network_mode: "host"
